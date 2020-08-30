@@ -1,21 +1,25 @@
 # Clojourney
 
-Repo where I'll document and share my advancements in learning clojure.
+Repo where I'll document and share my advancements in learning
 - [Clojourney](#clojourney)
   - [Language spec/themes](#language-specthemes)
   - [Exercism exercises](#exercism-exercises)
     - [Two-fer](#two-fer)
+      - [Iteration #0](#iteration-0)
       - [Iteration #1](#iteration-1)
-      - [Iteration #2](#iteration-2)
     - [Reverse-string](#reverse-string)
+      - [Iteration #0](#iteration-0-1)
       - [Iteration #1](#iteration-1-1)
-      - [Iteration #2](#iteration-2-1)
+      - [Iteration #2](#iteration-2)
       - [Iteration #3](#iteration-3)
       - [Iteration #4](#iteration-4)
       - [Iteration #5](#iteration-5)
       - [Iteration #6](#iteration-6)
-      - [Iteration #7](#iteration-7)
       - [Todo:](#todo)
+    - [Accumulate](#accumulate)
+      - [Iteration #0](#iteration-0-2)
+    - [Beer-song](#beer-song)
+      - [Iteration #0](#iteration-0-3)
 ## Language spec/themes
 
 TBD.
@@ -26,7 +30,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 
 ### Two-fer 
 
-#### Iteration #1
+#### Iteration #0
 ```clojure
 (ns two-fer)
 
@@ -35,7 +39,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
   ([name] (str "One for " name  ", one for me.")))
 ```
 
-#### Iteration #2
+#### Iteration #1
 ```clojure
 (ns two-fer)
 
@@ -47,7 +51,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 ### Reverse-string
 
 
-#### Iteration #1
+#### Iteration #0
 ```clojure
 (ns reverse-string)
 
@@ -56,7 +60,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (get s (- (- (count s) 1) idx))))
                (range (count s)))))
 ```
-#### Iteration #2
+#### Iteration #1
 ```clojure
 (ns reverse-string)
 
@@ -65,7 +69,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (get s idx)))
                (range (count s) -1 -1)))) ; use begin, end and step params
 ```
-#### Iteration #3
+#### Iteration #2
 ```clojure
 (ns reverse-string)
 
@@ -74,7 +78,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (nth s idx))) ; change `get` for `nth`
                (range (- (count s) 1) -1 -1))))
 ```
-#### Iteration #4
+#### Iteration #3
 ```clojure
 (ns reverse-string)
 
@@ -83,7 +87,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (nth s idx)))
                (range (dec (count s)) -1 -1)))); change (- x 1) for (dec x) 
 ```
-#### Iteration #5
+#### Iteration #4
 ```clojure
 (ns reverse-string)
 
@@ -92,7 +96,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map #(str (nth s %)) ; change anonymous function for reader syntax
                (range (dec (count s)) -1 -1))))
 ```
-#### Iteration #6
+#### Iteration #5
 ```clojure
 (ns reverse-string)
 
@@ -101,7 +105,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map #(nth s %) ; remove call to `str` from mapping fn
                (range (dec (count s)) -1 -1))))
 ```
-#### Iteration #7
+#### Iteration #6
 ```clojure
 (ns reverse-string)
 
@@ -113,3 +117,66 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 
 #### Todo:
 * solve without depending on strings' support for random access;
+
+### Accumulate
+
+#### Iteration #0
+
+```clojure
+(ns accumulate)
+
+(defn accumulate [fn_ list_]
+  (map fn_ list_)
+  )
+```
+
+### Beer-song
+
+#### Iteration #0
+
+```clojure
+(ns beer-song)
+
+(defn bottles-in-wall [expression]
+  (str expression " of beer on the wall"))
+
+(defn base-verse [args]
+  (str (bottles-in-wall (nth args 0)) ", " (nth args 1) " of beer.\n"
+       "Take " (nth args 2) " down and pass it around, " (bottles-in-wall (nth args 3)) ".\n"))
+
+(defn singular
+  "Return the singular verse of the song"
+  ([] ["1 bottle" "1 bottle" "it" "no more bottles"]))
+
+(defn is-one? [num_] (= num_ 1))
+
+(defn bottle-expression [num_]
+  (if (is-one? num_)
+    (str num_ " bottle")
+    (str num_ " bottles")))
+
+(defn plural
+  "Return a plural verse of the song"
+  ([num_]  [(bottle-expression num_) (bottle-expression num_) "one" (bottle-expression (dec num_))]))
+
+(defn in-stock [num_]
+  (if (is-one? num_)
+    (base-verse (singular))
+    (base-verse (plural num_))))
+
+(defn out-of-stock
+  ([] (str "No more bottles of beer on the wall, no more bottles of beer.\n"
+           "Go to the store and buy some more, 99 bottles of beer on the wall.\n")))
+
+(defn is-zero? [num_] (= num_ 0))
+
+(defn verse
+  ([num_]
+   (if (is-zero? num_)
+     (out-of-stock)
+     (in-stock num_))))
+
+(defn sing
+  ([start] (sing start 0))
+  ([start end] (apply str (drop-last (apply str  (map #(str % "\n") (map verse (range start (dec end) -1)))))))) ; drop last \n due to test case
+```
