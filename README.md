@@ -138,11 +138,34 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 
 (defn reverse-string [s]
   (apply str
-         (loop [s_ s ; create general reverse
+         (loop [s_ s ; create general reverse ; without depending on String random access
                 reversed []]
            (if (empty? s_)
              reversed
              (recur (drop-last s_) (conj reversed (last s_)))))))
+```
+
+#### Iteration #8
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (apply str 
+         (loop [s_ s
+                reversed ()]
+           (if (empty? s_)
+             reversed
+            (recur (rest s_) (conj reversed (first s_))))))) ; without using `last`, `drop-last`, and vectors (N^2)
+```
+
+#### Iteration #9
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (apply str (reduce #(conj %1 %2) () s))) ; using reduce instead
 ```
 
 ### Accumulate
