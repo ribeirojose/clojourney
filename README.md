@@ -1,6 +1,7 @@
 # Clojourney
 
 Repo where I'll document and share my advancements in learning
+
 - [Clojourney](#clojourney)
   - [Language spec/themes](#language-specthemes)
   - [Exercism exercises](#exercism-exercises)
@@ -15,11 +16,12 @@ Repo where I'll document and share my advancements in learning
       - [Iteration #4](#iteration-4)
       - [Iteration #5](#iteration-5)
       - [Iteration #6](#iteration-6)
-      - [Todo:](#todo)
+      - [Iteration #7](#iteration-7)
     - [Accumulate](#accumulate)
       - [Iteration #0](#iteration-0-2)
     - [Beer-song](#beer-song)
       - [Iteration #0](#iteration-0-3)
+
 ## Language spec/themes
 
 TBD.
@@ -28,9 +30,10 @@ TBD.
 
 Resource where I'll post the iterations of [exercism](https://exercism.io/my/tracks/clojure) Clojure track exercises (mostly based on feedback by code mentors, to whom I'm grateful).
 
-### Two-fer 
+### Two-fer
 
 #### Iteration #0
+
 ```clojure
 (ns two-fer)
 
@@ -40,6 +43,7 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 ```
 
 #### Iteration #1
+
 ```clojure
 (ns two-fer)
 
@@ -50,8 +54,8 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 
 ### Reverse-string
 
-
 #### Iteration #0
+
 ```clojure
 (ns reverse-string)
 
@@ -60,7 +64,9 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (get s (- (- (count s) 1) idx))))
                (range (count s)))))
 ```
+
 #### Iteration #1
+
 ```clojure
 (ns reverse-string)
 
@@ -69,7 +75,9 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (get s idx)))
                (range (count s) -1 -1)))) ; use begin, end and step params
 ```
+
 #### Iteration #2
+
 ```clojure
 (ns reverse-string)
 
@@ -78,16 +86,20 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map (fn [idx] (str (nth s idx))) ; change `get` for `nth`
                (range (- (count s) 1) -1 -1))))
 ```
+
 #### Iteration #3
+
 ```clojure
 (ns reverse-string)
 
 (defn reverse-string [s]
   (reduce str
           (map (fn [idx] (str (nth s idx)))
-               (range (dec (count s)) -1 -1)))); change (- x 1) for (dec x) 
+               (range (dec (count s)) -1 -1)))); change (- x 1) for (dec x)
 ```
+
 #### Iteration #4
+
 ```clojure
 (ns reverse-string)
 
@@ -96,7 +108,9 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map #(str (nth s %)) ; change anonymous function for reader syntax
                (range (dec (count s)) -1 -1))))
 ```
+
 #### Iteration #5
+
 ```clojure
 (ns reverse-string)
 
@@ -105,7 +119,9 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
           (map #(nth s %) ; remove call to `str` from mapping fn
                (range (dec (count s)) -1 -1))))
 ```
+
 #### Iteration #6
+
 ```clojure
 (ns reverse-string)
 
@@ -115,8 +131,19 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
               (range (dec (count s)) -1 -1))))
 ```
 
-#### Todo:
-* solve without depending on strings' support for random access;
+#### Iteration #7
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (apply str
+         (loop [s_ s ; create general reverse
+                reversed []]
+           (if (empty? s_)
+             reversed
+             (recur (drop-last s_) (conj reversed (last s_)))))))
+```
 
 ### Accumulate
 
