@@ -3,7 +3,10 @@
 Repo where I'll document and share my advancements in learning
 
 - [Clojourney](#clojourney)
-  - [Language spec/themes](#language-specthemes)
+  - [Language concepts](#language-concepts)
+    - [Lists](#lists)
+    - [Vectors](#vectors)
+      - [Additional resources](#additional-resources)
   - [Exercism exercises](#exercism-exercises)
     - [Two-fer](#two-fer)
       - [Iteration #0](#iteration-0)
@@ -17,14 +20,26 @@ Repo where I'll document and share my advancements in learning
       - [Iteration #5](#iteration-5)
       - [Iteration #6](#iteration-6)
       - [Iteration #7](#iteration-7)
+      - [Iteration #8](#iteration-8)
+      - [Iteration #9](#iteration-9)
+      - [Iteration #10](#iteration-10)
+      - [Iteration #11](#iteration-11)
+      - [Iteration 12](#iteration-12)
     - [Accumulate](#accumulate)
       - [Iteration #0](#iteration-0-2)
     - [Beer-song](#beer-song)
       - [Iteration #0](#iteration-0-3)
 
-## Language spec/themes
+## Language concepts
 
-TBD.
+### Lists
+* Are singly-linked-lists;
+
+### Vectors
+* Support fast indexed access;
+
+#### Additional resources
+* https://hypirion.com/musings/understanding-persistent-vector-pt-1
 
 ## Exercism exercises
 
@@ -166,6 +181,33 @@ Resource where I'll post the iterations of [exercism](https://exercism.io/my/tra
 
 (defn reverse-string [s]
   (apply str (reduce #(conj %1 %2) () s))) ; using reduce instead
+```
+
+#### Iteration #10
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (apply str (reduce conj () s))) ; #(conj %1 %2) is the own definition of `conj` ;-)
+```
+
+#### Iteration #11
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (apply str (into () s))) ; see `(source into)` to see that this is would fall unto the condition `(reduce conj to from)`
+```
+
+#### Iteration 12
+
+```clojure
+(ns reverse-string)
+
+(defn reverse-string [s]
+  (.toString (.reverse (StringBuilder. ^String s)))) ; using Java interops -> probably over engineering in most cases (this is what is implemented by `clojure.string/reverse`
 ```
 
 ### Accumulate
